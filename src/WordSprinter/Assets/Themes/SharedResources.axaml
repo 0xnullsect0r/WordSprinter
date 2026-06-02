@@ -1,0 +1,8 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="OrpColor">#E63946</Color>
+    <SolidColorBrush x:Key="OrpBrush" Color="{StaticResource OrpColor}"/>
+    <SolidColorBrush x:Key="RedicleBorderBrush" Color="#30808080"/>
+    <SolidColorBrush x:Key="GuideLineBrush" Color="#40808080"/>
+    <x:Double x:Key="OrpColumnWidth">220</x:Double>
+</ResourceDictionary>

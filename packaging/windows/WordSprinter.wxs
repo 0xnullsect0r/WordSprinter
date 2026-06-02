@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+    <Package Name="WordSprinter"
+             Manufacturer="WordSprinter"
+             Version="$(sys.BUILDNUMBER)"
+             UpgradeCode="A1B2C3D4-E5F6-7890-ABCD-EF1234567890"
+             Scope="perMachine">
+
+        <MajorUpgrade DowngradeErrorMessage="A newer version of WordSprinter is already installed." />
+        <MediaTemplate EmbedCab="yes" />
+
+        <Feature Id="ProductFeature" Title="WordSprinter" Level="1">
+            <ComponentGroupRef Id="ProductComponents" />
+            <ComponentRef Id="ProgramMenuDir" />
+        </Feature>
+
+        <StandardDirectory Id="ProgramFiles6432Folder">
+            <Directory Id="INSTALLFOLDER" Name="WordSprinter">
+                <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+                    <Component Id="MainExecutable">
+                        <File Source="$(sys.SOURCEFILEDIR)..\..\publish\win-x64\WordSprinter.exe"
+                              Id="WordSprinterExe"
+                              KeyPath="yes">
+                            <Shortcut Id="DesktopShortcut"
+                                      Directory="DesktopFolder"
+                                      Name="WordSprinter"
+                                      Advertise="no" />
+                        </File>
+                    </Component>
+                </ComponentGroup>
+            </Directory>
+        </StandardDirectory>
+
+        <StandardDirectory Id="ProgramMenuFolder">
+            <Directory Id="ProgramMenuDir" Name="WordSprinter">
+                <Component Id="ProgramMenuDir" Guid="B2C3D4E5-F6A7-8901-BCDE-F12345678901">
+                    <Shortcut Id="StartMenuShortcut"
+                              Name="WordSprinter"
+                              Target="[INSTALLFOLDER]WordSprinter.exe"
+                              WorkingDirectory="INSTALLFOLDER" />
+                    <RemoveFolder Id="CleanUpShortCut" Directory="ProgramMenuDir" On="uninstall" />
+                    <RegistryValue Root="HKCU"
+                                  Key="Software\WordSprinter"
+                                  Name="installed"
+                                  Type="integer"
+                                  Value="1"
+                                  KeyPath="yes" />
+                </Component>
+            </Directory>
+        </StandardDirectory>
+    </Package>
+</Wix>

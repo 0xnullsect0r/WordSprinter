@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=WordSprinter
+Comment=RSVP Ebook Reader
+Exec=/opt/wordsprinter/WordSprinter
+Icon=wordsprinter
+Categories=Office;Viewer;Education;
+Terminal=false
+StartupNotify=true
+MimeType=application/epub+zip;application/pdf;application/x-mobipocket-ebook;

@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:models="using:WordSprinter.Models"
+             x:Class="WordSprinter.Views.Controls.BookCoverCard"
+             x:DataType="models:BookEntry"
+             Width="150" Height="210"
+             Cursor="Hand">
+    <Border CornerRadius="8" ClipToBounds="True"
+            BorderBrush="{DynamicResource RedicleBorderBrush}" BorderThickness="1">
+        <Grid RowDefinitions="*,Auto">
+            <Border Grid.Row="0" Background="#20808080">
+                <TextBlock Text="📖" FontSize="48"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <Border Grid.Row="1" Padding="8,6">
+                <StackPanel>
+                    <TextBlock Text="{Binding Title}" FontSize="12" FontWeight="SemiBold"
+                               TextWrapping="Wrap" MaxLines="2"/>
+                    <TextBlock Text="{Binding Author}" FontSize="10" Opacity="0.7"
+                               TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

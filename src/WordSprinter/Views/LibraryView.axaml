@@ -1,0 +1,71 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:WordSprinter.ViewModels"
+             xmlns:models="using:WordSprinter.Models"
+             xmlns:controls="using:WordSprinter.Views.Controls"
+             x:Class="WordSprinter.Views.LibraryView"
+             x:DataType="vm:LibraryViewModel">
+
+    <DockPanel>
+        <!-- Header -->
+        <Border DockPanel.Dock="Top" Padding="24,16" BorderBrush="{DynamicResource RedicleBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <TextBlock Text="WordSprinter" FontSize="22" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Text="Library" FontSize="22" Opacity="0.5" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                    <Button Content="⚙ Settings" Command="{Binding OpenSettingsCommand}"/>
+                    <Button Content="+ Import Book" Click="OnImportButtonClicked"
+                            Classes="accent"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Error message -->
+        <Border DockPanel.Dock="Top" Background="#20E63946" Padding="16,8"
+                IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="#E63946"/>
+        </Border>
+
+        <!-- Loading -->
+        <ProgressBar DockPanel.Dock="Top" IsIndeterminate="True"
+                     IsVisible="{Binding IsLoading}" Height="3"/>
+
+        <!-- Books grid -->
+        <ScrollViewer Padding="16">
+            <Panel>
+                <!-- Empty state -->
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
+                            IsVisible="{Binding !Books.Count}"
+                            Spacing="16" Margin="0,80">
+                    <TextBlock Text="📚" FontSize="64" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Your library is empty" FontSize="20" HorizontalAlignment="Center" Opacity="0.6"/>
+                    <TextBlock Text="Import an EPUB, PDF, or Kindle book to get started" HorizontalAlignment="Center" Opacity="0.4"/>
+                    <Button Content="Import Book" HorizontalAlignment="Center" Classes="accent"
+                            Click="OnImportButtonClicked"/>
+                </StackPanel>
+
+                <!-- Books -->
+                <ItemsControl ItemsSource="{Binding Books}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="models:BookEntry">
+                            <Button Margin="8" Padding="0"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Command="{Binding $parent[ItemsControl].((vm:LibraryViewModel)DataContext).OpenBookCommand}"
+                                    CommandParameter="{Binding}">
+                                <controls:BookCoverCard DataContext="{Binding}"/>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Panel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

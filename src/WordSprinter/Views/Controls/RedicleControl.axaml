@@ -1,0 +1,43 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:WordSprinter.ViewModels"
+             x:Class="WordSprinter.Views.Controls.RedicleControl"
+             x:DataType="vm:ReaderViewModel">
+    <Border BorderBrush="{DynamicResource RedicleBorderBrush}"
+            BorderThickness="1"
+            CornerRadius="10"
+            Padding="32,16"
+            MinWidth="500"
+            HorizontalAlignment="Stretch">
+        <Grid RowDefinitions="1,Auto,1">
+            <!-- Top guide line -->
+            <Rectangle Grid.Row="0" Height="1" Fill="{DynamicResource GuideLineBrush}" HorizontalAlignment="Stretch"/>
+
+            <!-- Word display -->
+            <Grid Grid.Row="1" ColumnDefinitions="220,Auto,*" Margin="0,8">
+                <TextBlock Grid.Column="0"
+                           Text="{Binding LeftPart}"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           FontSize="{Binding FontSize}"
+                           FontFamily="Consolas,Courier New,monospace"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding OrpLetter}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="{Binding FontSize}"
+                           Foreground="{DynamicResource OrpBrush}"
+                           FontFamily="Consolas,Courier New,monospace"/>
+                <TextBlock Grid.Column="2"
+                           Text="{Binding RightPart}"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontSize="{Binding FontSize}"
+                           FontFamily="Consolas,Courier New,monospace"/>
+            </Grid>
+
+            <!-- Bottom guide line -->
+            <Rectangle Grid.Row="2" Height="1" Fill="{DynamicResource GuideLineBrush}" HorizontalAlignment="Stretch"/>
+        </Grid>
+    </Border>
+</UserControl>

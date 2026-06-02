@@ -1,0 +1,24 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:WordSprinter.ViewModels"
+        xmlns:views="using:WordSprinter.Views"
+        x:Class="WordSprinter.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="WordSprinter"
+        Width="900" Height="650"
+        MinWidth="700" MinHeight="500">
+
+    <ContentControl Content="{Binding CurrentView}">
+        <ContentControl.DataTemplates>
+            <DataTemplate DataType="vm:LibraryViewModel">
+                <views:LibraryView/>
+            </DataTemplate>
+            <DataTemplate DataType="vm:ReaderViewModel">
+                <views:ReaderView/>
+            </DataTemplate>
+            <DataTemplate DataType="vm:SettingsViewModel">
+                <views:SettingsView/>
+            </DataTemplate>
+        </ContentControl.DataTemplates>
+    </ContentControl>
+</Window>

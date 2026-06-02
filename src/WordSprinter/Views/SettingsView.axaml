@@ -1,0 +1,44 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:WordSprinter.ViewModels"
+             x:Class="WordSprinter.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+
+    <DockPanel>
+        <Border DockPanel.Dock="Top" Padding="16,12"
+                BorderBrush="{DynamicResource RedicleBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid ColumnDefinitions="Auto,*">
+                <Button Grid.Column="0" Content="← Back" Command="{Binding GoBackCommand}"/>
+                <TextBlock Grid.Column="1" Text="Settings" FontSize="18" FontWeight="SemiBold"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <ScrollViewer>
+            <StackPanel MaxWidth="480" HorizontalAlignment="Center" Margin="32" Spacing="24">
+                <!-- Theme -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Theme" FontWeight="SemiBold"/>
+                    <ComboBox ItemsSource="{Binding ThemeOptions}"
+                              SelectedItem="{Binding Theme}"
+                              HorizontalAlignment="Stretch"/>
+                </StackPanel>
+
+                <!-- Default WPM -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{Binding DefaultWpm, StringFormat='Default Speed: {0} WPM'}" FontWeight="SemiBold"/>
+                    <Slider Minimum="100" Maximum="1000" Value="{Binding DefaultWpm}"
+                            TickFrequency="50" IsSnapToTickEnabled="True"/>
+                </StackPanel>
+
+                <!-- Calibre path -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Calibre Path (for Kindle books)" FontWeight="SemiBold"/>
+                    <TextBlock Text="Required for MOBI, AZW, AZW3, and KFX files. Point to your Calibre installation directory."
+                               TextWrapping="Wrap" Opacity="0.6" FontSize="12"/>
+                    <TextBox Text="{Binding CalibrePath}" Watermark="/usr/bin or C:\Program Files\Calibre2"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

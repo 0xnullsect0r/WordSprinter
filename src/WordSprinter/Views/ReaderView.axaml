@@ -1,0 +1,75 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:WordSprinter.ViewModels"
+             xmlns:controls="using:WordSprinter.Views.Controls"
+             x:Class="WordSprinter.Views.ReaderView"
+             x:DataType="vm:ReaderViewModel">
+
+    <DockPanel>
+        <!-- Top bar -->
+        <Border DockPanel.Dock="Top" Padding="16,12"
+                BorderBrush="{DynamicResource RedicleBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <Button Grid.Column="0" Content="← Library" Command="{Binding GoBackCommand}"/>
+                <TextBlock Grid.Column="1" Text="{Binding BookTitle}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           FontSize="16" FontWeight="SemiBold"
+                           TextTrimming="CharacterEllipsis"/>
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <TextBlock Text="Font:" VerticalAlignment="Center" Opacity="0.6"/>
+                    <Button Content="-" Width="28" Height="28" Padding="0"
+                            Command="{Binding DecreaseFontSizeCommand}"/>
+                    <TextBlock Text="{Binding FontSize}" VerticalAlignment="Center" MinWidth="24" TextAlignment="Center"/>
+                    <Button Content="+" Width="28" Height="28" Padding="0"
+                            Command="{Binding IncreaseFontSizeCommand}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Bottom controls -->
+        <Border DockPanel.Dock="Bottom" Padding="24,16"
+                BorderBrush="{DynamicResource RedicleBorderBrush}" BorderThickness="0,1,0,0">
+            <StackPanel Spacing="12">
+                <!-- Playback buttons -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="16">
+                    <Button Content="⏮ 5" Command="{Binding Back5WordsCommand}" Width="64"/>
+                    <Button Content="▶ Play" Command="{Binding PlayPauseCommand}"
+                            Width="96" Classes="accent"
+                            IsVisible="{Binding !IsPlaying}"/>
+                    <Button Content="⏸ Pause" Command="{Binding PlayPauseCommand}"
+                            Width="96"
+                            IsVisible="{Binding IsPlaying}"/>
+                    <Button Content="5 ⏭" Command="{Binding Forward5WordsCommand}" Width="64"/>
+                </StackPanel>
+
+                <!-- WPM control -->
+                <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+                    <TextBlock Grid.Column="0" Text="100 WPM" VerticalAlignment="Center" Opacity="0.5" Margin="0,0,8,0"/>
+                    <Slider Grid.Column="1" Minimum="100" Maximum="1000" Value="{Binding Wpm}"
+                            TickFrequency="50" IsSnapToTickEnabled="True"/>
+                    <TextBlock Grid.Column="2" Text="1000 WPM" VerticalAlignment="Center" Opacity="0.5" Margin="8,0,0,0"/>
+                </Grid>
+                <TextBlock Text="{Binding Wpm, StringFormat='{}{0} WPM'}"
+                           HorizontalAlignment="Center" Opacity="0.7"/>
+
+                <!-- Progress bar -->
+                <ProgressBar Value="{Binding Progress}" Maximum="100" Height="4"/>
+                <TextBlock Text="{Binding Progress, StringFormat='{}{0:F0}%'}"
+                           HorizontalAlignment="Center" Opacity="0.5" FontSize="11"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Error message -->
+        <Border DockPanel.Dock="Top" Background="#20E63946" Padding="16,8"
+                IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="#E63946"/>
+        </Border>
+
+        <!-- Redicle (center) -->
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+            <controls:RedicleControl DataContext="{Binding}"
+                                     HorizontalAlignment="Center"
+                                     Margin="32"/>
+        </Grid>
+    </DockPanel>
+</UserControl>

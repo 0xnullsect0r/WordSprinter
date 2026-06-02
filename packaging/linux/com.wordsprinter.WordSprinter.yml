@@ -1,0 +1,24 @@
+app-id: com.wordsprinter.WordSprinter
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+command: WordSprinter
+
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --socket=wayland
+  - --filesystem=home
+  - --device=dri
+
+modules:
+  - name: wordsprinter
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 WordSprinter /app/bin/WordSprinter
+      - install -Dm644 wordsprinter.desktop /app/share/applications/com.wordsprinter.WordSprinter.desktop
+    sources:
+      - type: dir
+        path: publish/linux-x64
+      - type: file
+        path: packaging/linux/wordsprinter.desktop
