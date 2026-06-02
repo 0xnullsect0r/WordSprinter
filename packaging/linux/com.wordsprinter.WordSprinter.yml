@@ -19,6 +19,6 @@ modules:
       - install -Dm644 wordsprinter.desktop /app/share/applications/com.wordsprinter.WordSprinter.desktop
     sources:
       - type: dir
-        path: publish/linux-x64
+        path: ../../publish/linux-x64
       - type: file
-        path: packaging/linux/wordsprinter.desktop
+        path: wordsprinter.desktop

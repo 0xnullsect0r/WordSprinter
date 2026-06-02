@@ -10,30 +10,26 @@
         <MediaTemplate EmbedCab="yes" />
 
         <Feature Id="ProductFeature" Title="WordSprinter" Level="1">
-            <ComponentGroupRef Id="ProductComponents" />
-            <ComponentRef Id="ProgramMenuDir" />
+            <ComponentRef Id="MainExecutable" />
+            <ComponentRef Id="StartMenuShortcutComp" />
         </Feature>
 
         <StandardDirectory Id="ProgramFiles6432Folder">
             <Directory Id="INSTALLFOLDER" Name="WordSprinter">
-                <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-                    <Component Id="MainExecutable">
-                        <File Source="publish\win-x64\WordSprinter.exe"
-                              Id="WordSprinterExe"
-                              KeyPath="yes">
-                            <Shortcut Id="DesktopShortcut"
-                                      Directory="DesktopFolder"
-                                      Name="WordSprinter"
-                                      Advertise="no" />
-                        </File>
-                    </Component>
-                </ComponentGroup>
+                <Component Id="MainExecutable">
+                    <File Source="publish\win-x64\WordSprinter.exe" KeyPath="yes">
+                        <Shortcut Id="DesktopShortcut"
+                                  Directory="DesktopFolder"
+                                  Name="WordSprinter"
+                                  Advertise="no" />
+                    </File>
+                </Component>
             </Directory>
         </StandardDirectory>
 
         <StandardDirectory Id="ProgramMenuFolder">
             <Directory Id="ProgramMenuDir" Name="WordSprinter">
-                <Component Id="ProgramMenuDir" Guid="B2C3D4E5-F6A7-8901-BCDE-F12345678901">
+                <Component Id="StartMenuShortcutComp" Guid="B2C3D4E5-F6A7-8901-BCDE-F12345678901">
                     <Shortcut Id="StartMenuShortcut"
                               Name="WordSprinter"
                               Target="[INSTALLFOLDER]WordSprinter.exe"
