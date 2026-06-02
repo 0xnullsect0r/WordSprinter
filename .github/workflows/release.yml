@@ -4,6 +4,12 @@ on:
   push:
     tags:
       - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (e.g. v0.1.1)'
+        required: true
+        default: 'v0.1.1'
 
 permissions:
   contents: write
@@ -26,18 +32,18 @@ jobs:
         run: dotnet tool install --global wix --version "4.0.5"
       - name: Build MSI
         run: |
-          $version = "${{ github.ref_name }}".TrimStart('v')
+          $version = "${{ inputs.version || github.ref_name }}".TrimStart('v')
           wix build packaging/windows/WordSprinter.wxs `
             -d "Version=$version" `
-            -o "WordSprinter-${{ github.ref_name }}-win-x64.msi"
+            -o "WordSprinter-${{ inputs.version || github.ref_name }}-win-x64.msi"
       - name: Rename exe
-        run: copy publish\win-x64\WordSprinter.exe WordSprinter-${{ github.ref_name }}-win-x64.exe
+        run: copy publish\win-x64\WordSprinter.exe WordSprinter-${{ inputs.version || github.ref_name }}-win-x64.exe
       - uses: actions/upload-artifact@v4
         with:
           name: windows-artifacts
           path: |
-            WordSprinter-${{ github.ref_name }}-win-x64.exe
-            WordSprinter-${{ github.ref_name }}-win-x64.msi
+            WordSprinter-${{ inputs.version || github.ref_name }}-win-x64.exe
+            WordSprinter-${{ inputs.version || github.ref_name }}-win-x64.msi
 
   build-macos:
     runs-on: macos-latest
@@ -55,15 +61,15 @@ jobs:
             -p:PublishSingleFile=true \
             -o publish/osx-x64
       - name: Create DMG
-        run: bash packaging/macos/create-dmg.sh "${{ github.ref_name }}"
+        run: bash packaging/macos/create-dmg.sh "${{ inputs.version || github.ref_name }}"
       - name: Rename binary
-        run: cp publish/osx-x64/WordSprinter "WordSprinter-${{ github.ref_name }}-macos-x64"
+        run: cp publish/osx-x64/WordSprinter "WordSprinter-${{ inputs.version || github.ref_name }}-macos-x64"
       - uses: actions/upload-artifact@v4
         with:
           name: macos-artifacts
           path: |
-            WordSprinter-${{ github.ref_name }}-macos-x64
-            WordSprinter-${{ github.ref_name }}-macos-x64.dmg
+            WordSprinter-${{ inputs.version || github.ref_name }}-macos-x64
+            WordSprinter-${{ inputs.version || github.ref_name }}-macos-x64.dmg
 
   build-linux:
     runs-on: ubuntu-latest
@@ -85,12 +91,12 @@ jobs:
             -o publish/linux-x64
       - name: Build DEB
         run: |
-          VERSION="${{ github.ref_name }}"
+          VERSION="${{ inputs.version || github.ref_name }}"
           VERSION="${VERSION#v}"
           bash packaging/linux/build-deb.sh "$VERSION"
       - name: Build RPM
         run: |
-          VERSION="${{ github.ref_name }}"
+          VERSION="${{ inputs.version || github.ref_name }}"
           VERSION="${VERSION#v}"
           bash packaging/linux/build-rpm.sh "$VERSION"
       - name: Install Flatpak SDK
@@ -102,18 +108,18 @@ jobs:
           flatpak-builder --user --repo=repo --force-clean build-dir \
             packaging/linux/com.wordsprinter.WordSprinter.yml
           flatpak build-bundle repo \
-            "WordSprinter-${{ github.ref_name }}-linux-x64.flatpak" \
+            "WordSprinter-${{ inputs.version || github.ref_name }}-linux-x64.flatpak" \
             com.wordsprinter.WordSprinter
       - name: Rename binary
-        run: cp publish/linux-x64/WordSprinter "WordSprinter-${{ github.ref_name }}-linux-x64"
+        run: cp publish/linux-x64/WordSprinter "WordSprinter-${{ inputs.version || github.ref_name }}-linux-x64"
       - uses: actions/upload-artifact@v4
         with:
           name: linux-artifacts
           path: |
-            WordSprinter-${{ github.ref_name }}-linux-x64
+            WordSprinter-${{ inputs.version || github.ref_name }}-linux-x64
             wordsprinter_*_amd64.deb
             wordsprinter-*.x86_64.rpm
-            WordSprinter-${{ github.ref_name }}-linux-x64.flatpak
+            WordSprinter-${{ inputs.version || github.ref_name }}-linux-x64.flatpak
 
   create-release:
     needs: [build-windows, build-macos, build-linux]
@@ -125,6 +131,8 @@ jobs:
           merge-multiple: true
       - uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ inputs.version || github.ref_name }}
+          name: WordSprinter ${{ inputs.version || github.ref_name }}
           files: artifacts/**/*
           generate_release_notes: true
           fail_on_unmatched_files: false
