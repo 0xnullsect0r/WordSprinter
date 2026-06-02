@@ -2,7 +2,7 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
     <Package Name="WordSprinter"
              Manufacturer="WordSprinter"
-             Version="$(sys.BUILDNUMBER)"
+             Version="$(var.Version)"
              UpgradeCode="A1B2C3D4-E5F6-7890-ABCD-EF1234567890"
              Scope="perMachine">
 
@@ -18,7 +18,7 @@
             <Directory Id="INSTALLFOLDER" Name="WordSprinter">
                 <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
                     <Component Id="MainExecutable">
-                        <File Source="$(sys.SOURCEFILEDIR)..\..\publish\win-x64\WordSprinter.exe"
+                        <File Source="publish\win-x64\WordSprinter.exe"
                               Id="WordSprinterExe"
                               KeyPath="yes">
                             <Shortcut Id="DesktopShortcut"

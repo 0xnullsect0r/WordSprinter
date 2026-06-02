@@ -23,13 +23,12 @@ jobs:
             -p:PublishSingleFile=true `
             -o publish/win-x64
       - name: Install WiX
-        run: dotnet tool install --global wix
+        run: dotnet tool install --global wix --version "4.0.5"
       - name: Build MSI
         run: |
           $version = "${{ github.ref_name }}".TrimStart('v')
           wix build packaging/windows/WordSprinter.wxs `
-            -d "sys.BUILDNUMBER=$version" `
-            -d "sys.SOURCEFILEDIR=." `
+            -d "Version=$version" `
             -o "WordSprinter-${{ github.ref_name }}-win-x64.msi"
       - name: Rename exe
         run: copy publish\win-x64\WordSprinter.exe WordSprinter-${{ github.ref_name }}-win-x64.exe
