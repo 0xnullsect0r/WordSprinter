@@ -18,11 +18,11 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
     }
 
-    public override async void OnFrameworkInitializationCompleted()
+    public override void OnFrameworkInitializationCompleted()
     {
         var services = new ServiceCollection();
         var db = new DatabaseService();
-        await db.LoadAsync();
+        db.LoadAsync().GetAwaiter().GetResult();
 
         services.AddSingleton(db);
         services.AddSingleton<ISettingsService>(db);

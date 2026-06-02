@@ -14,6 +14,14 @@ public partial class LibraryViewModel : ViewModelBase
     [ObservableProperty]
     private ObservableCollection<BookEntry> _books = new();
 
+    public bool IsLibraryEmpty => Books.Count == 0;
+
+    partial void OnBooksChanged(ObservableCollection<BookEntry> value)
+    {
+        value.CollectionChanged += (_, _) => OnPropertyChanged(nameof(IsLibraryEmpty));
+        OnPropertyChanged(nameof(IsLibraryEmpty));
+    }
+
     [ObservableProperty]
     private bool _isLoading;
 

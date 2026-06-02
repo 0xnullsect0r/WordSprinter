@@ -37,7 +37,7 @@
             <Panel>
                 <!-- Empty state -->
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
-                            IsVisible="{Binding !Books.Count}"
+                            IsVisible="{Binding IsLibraryEmpty}"
                             Spacing="16" Margin="0,80">
                     <TextBlock Text="📚" FontSize="64" HorizontalAlignment="Center"/>
                     <TextBlock Text="Your library is empty" FontSize="20" HorizontalAlignment="Center" Opacity="0.6"/>
@@ -58,7 +58,7 @@
                             <Button Margin="8" Padding="0"
                                     Background="Transparent"
                                     BorderThickness="0"
-                                    Command="{Binding $parent[ItemsControl].((vm:LibraryViewModel)DataContext).OpenBookCommand}"
+                                    Command="{ReflectionBinding $parent[ItemsControl].DataContext.OpenBookCommand}"
                                     CommandParameter="{Binding}">
                                 <controls:BookCoverCard DataContext="{Binding}"/>
                             </Button>
